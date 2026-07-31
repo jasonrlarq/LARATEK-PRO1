@@ -1,3 +1,4 @@
+import os
 import time
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
@@ -8,20 +9,16 @@ from android.permissions import request_permissions, Permission
 
 class LaratekApp(App):
     def build(self):
-        # Request necessary Android permissions at runtime
-        request_permissions([Permission.CAMERA, Permission.WRITE_EXTERNAL_STORAGE, Permission.READ_EXTERNAL_STORAGE])
+        request_permissions([Permission.CAMERA])
 
         layout = BoxLayout(orientation='vertical')
         
-        # Title Label
         self.label = Label(text="Laratek eBay Scanner", size_hint=(1, 0.1))
         layout.add_widget(self.label)
         
-        # Camera Widget (shows live feed)
         self.cam = Camera(play=True, resolution=(640, 480), size_hint=(1, 0.7))
         layout.add_widget(self.cam)
         
-        # Capture Button
         btn = Button(text="Capture Item Photo", size_hint=(1, 0.2))
         btn.bind(on_press=self.capture_photo)
         layout.add_widget(btn)
@@ -29,9 +26,10 @@ class LaratekApp(App):
         return layout
 
     def capture_photo(self, instance):
-        filename = f"/sdcard/Download/ebay_item_{int(time.time())}.png"
+        # Save to the app's safe internal user data directory
+        filename = os.path.join(self.user_data_dir, f"ebay_item_{int(time.time())}.png")
         self.cam.export_to_png(filename)
-        self.label.text = f"Saved photo to Downloads!"
+        self.label.text = f"Saved to app storage!"
 
 if __name__ == '__main__':
     LaratekApp().run()
