@@ -21,7 +21,6 @@ jobs:
         sudo apt update
         sudo apt install -y \
             python3-pip \
-            build-python \
             git \
             zip \
             unzip \
@@ -31,7 +30,6 @@ jobs:
             zlib1g-dev \
             libncurses5-dev \
             libncursesw5-dev \
-            libtinfo5 \
             libffi-dev \
             libssl-dev
 
